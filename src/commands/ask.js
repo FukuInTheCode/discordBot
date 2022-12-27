@@ -1,6 +1,6 @@
 const { MessageActivityType } = require("discord.js");
 const { Configuration, OpenAIApi } = require('openai');
-const { OPENAI_API_KEY } = require('../config.json');
+const { OPENAI_API_KEY } = require('../../packages/config.json');
 
 const configuration = new Configuration({
     apiKey: OPENAI_API_KEY,
