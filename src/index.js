@@ -1,10 +1,12 @@
+//! bin/js
+
 const Discord = require('discord.js');
-const { TOKEN } = require('../packages/config.json');
+const { TOKEN } = require('../config.json');
+
 const fs = require('fs');
 
-console.log(TOKEN)
 
-
+// creating the client for the bot 
 const client = new Discord.Client({
     intents: [
         Discord.GatewayIntentBits.Guilds,
@@ -19,6 +21,7 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 console.log(commandFiles)
 
+// loading all the commands from the commands folder
 for (const file in commandFiles) {
     const command = require(`./commands/${commandFiles[file]}`);
 
@@ -30,10 +33,13 @@ for (const file in commandFiles) {
 
 };
 
+// check the client is on
 client.on('ready', c => {
     console.log(`Logged in as ${c.user.tag}!`);
 });
 
+
+// Event Listener for any message
 client.on(`messageCreate`, msg => {
     if (!msg.content.startsWith(`!`) || (!msg.channel.name.toLowerCase().includes('fubot') && !msg.channel.name.toLowerCase().includes('mod'))) return;
 
@@ -54,4 +60,5 @@ client.on(`messageCreate`, msg => {
 });
 
 
+// log the client
 client.login(TOKEN);
