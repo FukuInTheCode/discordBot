@@ -1,8 +1,6 @@
 //! bin/node.js
 
-const { Result } = require('@sapphire/shapeshift');
 const mysql = require('mysql');
-const { resourceLimits } = require('worker_threads');
 const { MySQL_PSSWRD } = require('../config.json');
 
 
@@ -22,14 +20,9 @@ connection.connect(function (err) {
 
 });
 
-connection.query(`select * from user_info `, function (err, results, fields) {
-    if (err) {
-        console.log(err)
-    };
-    if (results) {
-        console.log("results", results)
-    };
-    if (fields) {
-        console.log(fields)
-    };
-})
+connection.query(`SELECT * FROM user_info WHERE id = ${1};`, (err, results, fields) => {
+    if (err) throw err;
+    console.log(results);
+});
+
+module.exports = { connection }
