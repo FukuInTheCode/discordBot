@@ -1,5 +1,3 @@
-const { MessageActivityType } = require("discord.js");
-
 module.exports = {
     name: 'dice',
     description: 'roll a dice',

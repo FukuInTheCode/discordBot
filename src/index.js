@@ -1,7 +1,8 @@
-//! bin/js
+//! bin/node
 
 const Discord = require('discord.js');
 const { TOKEN } = require('../config.json');
+const { connection } = require('./server.js')
 
 const fs = require('fs');
 
@@ -41,7 +42,13 @@ client.on('ready', c => {
 
 // Event Listener for any message
 client.on(`messageCreate`, msg => {
-    if (!msg.content.startsWith(`!`) || (!msg.channel.name.toLowerCase().includes('fubot') && !msg.channel.name.toLowerCase().includes('mod'))) return;
+
+    // check if the message is a command, if not then do things
+    if (!msg.content.startsWith(`!`) || (!msg.channel.name.toLowerCase().includes('fubot') && !msg.channel.name.toLowerCase().includes('mod'))) {
+        return;
+    };
+
+    // Execute the code below only if the message id a "!" command
 
     const args = msg.content.slice(1).split(' ');
     const commandName = args.shift();

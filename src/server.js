@@ -20,9 +20,6 @@ connection.connect(function (err) {
 
 });
 
-connection.query(`SELECT * FROM user_info WHERE id = ${1};`, (err, results, fields) => {
-    if (err) throw err;
-    console.log(results);
-});
+
 
 module.exports = { connection }
