@@ -24,40 +24,54 @@ const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith(
 // Initialize all the commands from the commands folder
 for (const file in commandFiles) {
     const path = `./commands/${commandFiles[file]}`
-    const command = require(path);
 
-    if ('aliases' in command && 'execute' in command) {
-        command.aliases.forEach(aliase => {
-            client.commands.set(aliase, command);
-        });
-    } else {
-        console.log(`WARNING! The command-file: ${path}, is missing an argument ! `);
-    };
+    try {
+        const command = require(path);
+
+        if ('aliases' in command && 'execute' in command) {
+            command.aliases.forEach(aliase => {
+                client.commands.set(aliase, command);
+            });
+        } else {
+            console.log(`WARNING! The command-file: ${path}, is missing an argument ! `);
+        };
+
+
+    } catch (err) {
+        console.error(err);
+    }
 
     // Create a listener to watch every change in the file to stopalways restarting the bot when a change is made
     chokidar.watch(path).on(`change`, (new_path) => {
 
-        // delete the former command
-        command.aliases.forEach(aliase => {
-            client.commands.delete(aliase);
-        })
+        try {
+            // delete the former command
+            command.aliases.forEach(aliase => {
+                client.commands.delete(aliase);
+            })
+        } catch (err) {
+            1 + 1; // this is just to pass the line :)))
+        } finally {
+            // delete it require cache to re-require it
+            delete require.cache[require.resolve(`.\\${new_path}`)];
 
+            try {
+                const updated_command = require(`.\\${new_path}`);
 
-        // delele it require cache to re-require it
-        delete require.cache[require.resolve(`.\\${new_path}`)];
+                if ('aliases' in updated_command && 'execute' in updated_command) {
+                    updated_command.aliases.forEach(aliase => {
+                        client.commands.set(aliase, updated_command);
+                    });
 
-        const updated_command = require(`.\\${new_path}`);
+                } else {
+                    console.error(`WARNING! The command-file: ${new_path}, is missing an argument ! `);
+                };
+            } catch (err) {
+                console.error(err);
+            }
+        }
 
-        if ('aliases' in updated_command && 'execute' in updated_command) {
-            updated_command.aliases.forEach(aliase => {
-                client.commands.set(aliase, updated_command);
-            });
-
-        } else {
-            console.log(`WARNING! The command-file: ${new_path}, is missing an argument ! `);
-        };
     })
-
 };
 
 // create a listener for the ./commands folder to check if a command file is created and add it to the client
@@ -71,26 +85,33 @@ fs.watch(`./commands`, (event, filename) => {
 
         chokidar.watch(path).on(`change`, (new_path) => {
 
-            const command = require(`.\\${new_path}`);
+            try {
+                const command = require(`.\\${new_path}`);
 
-            // delete the former command
-            command.aliases.forEach(aliase => {
-                client.commands.delete(aliase);
-            })
+                // delete the former command
+                command.aliases.forEach(aliase => {
+                    client.commands.delete(aliase);
+                })
 
-            // delete it require cache to re-require it
-            delete require.cache[require.resolve(`.\\${new_path}`)];
+                // delete it require cache to re-require it
+                delete require.cache[require.resolve(`.\\${new_path}`)];
 
-            const updated_command = require(`.\\${new_path}`);
+                const updated_command = require(`.\\${new_path}`);
 
-            if ('aliases' in updated_command && 'execute' in updated_command) {
-                updated_command.aliases.forEach(aliase => {
-                    client.commands.set(aliase, updated_command);
-                });
+                if ('aliases' in updated_command && 'execute' in updated_command) {
+                    updated_command.aliases.forEach(aliase => {
+                        client.commands.set(aliase, updated_command);
+                    });
 
-            } else {
-                console.log(`WARNING! The command-file: ${new_path}, is missing an argument ! `);
-            };
+                } else {
+                    console.log(`WARNING! The command-file: ${new_path}, is missing an argument ! `);
+                };
+            } catch (err) {
+                console.error(err);
+            }
+
+
+
         })
     }
 });
