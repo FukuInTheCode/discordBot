@@ -17,8 +17,6 @@ module.exports = {
         request(message.author.displayAvatarURL(), { encoding: null }, (err, response, imageData) => {
             if (err) throw err;
 
-            console.log(sizeOf(imageData))
-
             loadImage(imageData).then((image) => {
                 ctx.drawImage(image, 0, 0, 50, 50);
                 return new Promise((resolve, reject) => {

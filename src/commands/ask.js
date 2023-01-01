@@ -9,7 +9,7 @@ const openai = new OpenAIApi(configuration);
 module.exports = {
     name: 'ask',
     description: 'ask a question',
-    aliases: ['askto'],
+    aliases: ['ask', 'askto'],
     async execute(message, args) {
 
         if (args.length == 0) {
