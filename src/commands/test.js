@@ -1,9 +1,6 @@
 //! bin/node
 
-const { createCanvas, loadImage } = require('canvas');
-const discord = require('discord.js');
-const request = require('request');
-const sizeOf = require('image-size')
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'test',
@@ -11,23 +8,9 @@ module.exports = {
     aliases: ['test'],
     execute(message, args) {
 
-        const canvas = createCanvas(200, 100);
-        const ctx = canvas.getContext('2d');
+        const exampleEmbed = new EmbedBuilder().setTitle('updated gg');
 
-        request(message.author.displayAvatarURL(), { encoding: null }, (err, response, imageData) => {
-            if (err) throw err;
-
-            console.log(sizeOf(imageData))
-
-            loadImage(imageData).then((image) => {
-                ctx.drawImage(image, 0, 0, 50, 50);
-                return new Promise((resolve, reject) => {
-                    const image = new discord.AttachmentBuilder(canvas.toBuffer('image/jpeg'))
-
-                    message.reply({ files: [image] })
-                })
-            })
-        })
+        message.reply({ embeds: [exampleEmbed] });
 
     }
 }
