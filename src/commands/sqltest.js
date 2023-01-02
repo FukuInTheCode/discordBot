@@ -1,7 +1,5 @@
 const { connection } = require('../server.js');
 
-
-
 module.exports = {
     name: 'signup',
     description: 'test for the signup command',

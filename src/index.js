@@ -41,7 +41,7 @@ for (const file in commandFiles) {
         console.error(err);
     }
 
-    // Create a listener to watch every change in the file to stopalways restarting the bot when a change is made
+    // Create a listener to watch every change in the file to stop always restarting the bot when a change is made
     chokidar.watch(path).on(`change`, (new_path) => {
 
         try {
