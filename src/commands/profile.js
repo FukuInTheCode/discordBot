@@ -8,6 +8,10 @@ module.exports = {
 
     execute(message, args) {
 
+        if (args == 1) {
+            connection.query(``)
+        }
+
 
         const profileEmbed = new EmbedBuilder()
             .setTitle(`${message.author.username}'s profile`)
@@ -15,7 +19,9 @@ module.exports = {
                 { name: `Level:`, value: `999` },
                 { name: `XP:`, value: `666/1000` }
             )
-            .setFooter({ text: 'Fubot\u00A9', iconURL: `${message.client.user.displayAvatarURL()}` });
+            .setColor(0x0099FF)
+            .setThumbnail(message.author.displayAvatarURL());
+
 
         message.reply({ embeds: [profileEmbed] });
 
