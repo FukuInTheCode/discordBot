@@ -34,4 +34,24 @@ CREATE TABLE server_infos (
     server_name varchar(45) NOT NULL,
     server_owner varchar(45) NOT NULL,
     server_isbeta tinyint(1) Default 0
-)
+);
+
+USE users_db;
+
+DELIMITER $$
+USE users_db$$
+CREATE PROCEDURE `add_user` (id VARCHAR(45), username VARCHAR(45))
+BEGIN
+	declare tmp int;
+    
+    select count(*) into tmp from user_infos where user_id = id;
+    
+    if tmp != 1 then 
+		INSERT INTO user_infos (user_id, user_username) VALUES (
+			id, 
+			username
+		);
+	end if;
+END$$
+
+DELIMITER ;
