@@ -82,7 +82,7 @@ fs.watch(path.join(__dirname, `./commands`), (event, filename) => {
 
     if (fs.readdirSync(path.join(__dirname, `./commands`)).length > client.commands.size) {
 
-        const command_fpath = `./commands/${filename}`;
+        const command_fpath = path.join(__dirname, `./commands/${filename}`);
 
         chokidar.watch(command_fpath).on(`change`, (new_path) => {
 
