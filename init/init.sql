@@ -48,12 +48,12 @@ BEGIN
 	IF tmp = 0 THEN
 		INSERT INTO fubot_users.user_infos (user_id, user_username) VALUES (id, username);
         INSERT INTO fubot_users.user_profiles (user_id, user_username) VALUES (id, username);
-        SELECT ui.user_id, ui.user_username, up.user_level, up.user_xp, up.users_coins 
+        SELECT ui.user_id, ui.user_username, up.user_level, up.user_xp, up.user_coins 
 			FROM fubot_users.user_infos AS ui
             JOIN fubot_users.user_profiles AS up ON ui.user_id = up.user_id
             WHERE ui.user_id = id;
 	ELSE 
-		SELECT ui.user_id, ui.user_username, up.user_level, up.user_xp, up.users_coins 
+		SELECT ui.user_id, ui.user_username, up.user_level, up.user_xp, up.user_coins 
 				FROM fubot_users.user_infos AS ui
 				JOIN fubot_users.user_profiles AS up ON ui.user_id = up.user_id
 				WHERE ui.user_id = id;

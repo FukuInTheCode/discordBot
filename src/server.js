@@ -7,8 +7,7 @@ const { MySQL_PSSWRD } = require('../config.json');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: `${MySQL_PSSWRD}`,
-    database: 'discord_test'
+    password: `${MySQL_PSSWRD}`
 });
 
 connection.connect(function (err) {

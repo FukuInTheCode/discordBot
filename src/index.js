@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const { TOKEN } = require('../config.json');
 const chokidar = require('chokidar');
 const fs = require('fs');
+const path = require('path');
 
 
 // creating the client for the bot 
@@ -16,24 +17,24 @@ const client = new Discord.Client({
 }
 );
 
-// the client 'stockage' for all the commands 
+// the client 'stockage' for all the commands
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(path.join(__dirname, './commands/')).filter(file => file.endsWith('.js'));
 
 // Initialize all the commands from the commands folder
 for (const file in commandFiles) {
-    const path = `./commands/${commandFiles[file]}`
+    const command_fpath = path.join(__dirname, `./commands/${commandFiles[file]}`)
 
     try {
-        const command = require(path);
+        const command = require(command_fpath);
 
         if ('aliases' in command && 'execute' in command) {
             command.aliases.forEach(aliase => {
                 client.commands.set(aliase, command);
             });
         } else {
-            console.log(`WARNING! The command-file: ${path}, is missing an argument ! `);
+            console.log(`WARNING! The command-file: ${command_fpath}, is missing an argument ! `);
         };
 
 
@@ -42,7 +43,7 @@ for (const file in commandFiles) {
     }
 
     // Create a listener to watch every change in the file to stop always restarting the bot when a change is made
-    chokidar.watch(path).on(`change`, (new_path) => {
+    chokidar.watch(command_fpath).on(`change`, (new_path) => {
 
         try {
             // delete the former command
@@ -52,7 +53,7 @@ for (const file in commandFiles) {
         } catch (err) {
             1 + 1; // this is just to pass the line :)))
         } finally {
-            // delete it require cache to re-require it
+            // delete its require cache to re-require it
             delete require.cache[require.resolve(`.\\${new_path}`)];
 
             try {
@@ -75,15 +76,15 @@ for (const file in commandFiles) {
 };
 
 // create a listener for the ./commands folder to check if a command file is created and add it to the client
-fs.watch(`./commands`, (event, filename) => {
+fs.watch(path.join(__dirname, `./commands`), (event, filename) => {
 
     if (!filename || event != 'rename') return;
 
-    if (fs.readdirSync(`./commands`).length > client.commands.size) {
+    if (fs.readdirSync(path.join(__dirname, `./commands`)).length > client.commands.size) {
 
-        const path = `./commands/${filename}`;
+        const command_fpath = `./commands/${filename}`;
 
-        chokidar.watch(path).on(`change`, (new_path) => {
+        chokidar.watch(command_fpath).on(`change`, (new_path) => {
 
             try {
                 const command = require(`.\\${new_path}`);
