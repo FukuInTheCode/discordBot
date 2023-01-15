@@ -4,21 +4,22 @@ const mysql = require('mysql');
 const { MySQL_PSSWRD } = require('../config.json');
 
 
-const connection = mysql.createConnection({
+const connect_usersdb = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: `${MySQL_PSSWRD}`
+    password: `${MySQL_PSSWRD}`,
+    database: `fubot_users`
 });
 
-connection.connect(function (err) {
+connect_usersdb.connect(function (err) {
     if (err) {
         return console.error('error: ' + err.message);
     }
 
-    console.log('Connected as ' + connection.threadId);
+    console.log('Connected as ' + connect_usersdb.threadId);
 
 });
 
 
 
-module.exports = { connection }
+module.exports = { connect_usersdb: connect_usersdb }

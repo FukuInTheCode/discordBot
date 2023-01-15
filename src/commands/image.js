@@ -3,7 +3,6 @@
 const { createCanvas, loadImage } = require('canvas');
 const discord = require('discord.js');
 const request = require('request');
-const sizeOf = require('image-size')
 
 module.exports = {
     name: 'image',

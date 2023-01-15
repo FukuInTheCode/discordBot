@@ -1,4 +1,4 @@
-//! bin/node
+//! bin/node.js
 
 const Discord = require('discord.js');
 const { TOKEN } = require('../config.json');
@@ -54,10 +54,10 @@ for (const file in commandFiles) {
             1 + 1; // this is just to pass the line :)))
         } finally {
             // delete its require cache to re-require it
-            delete require.cache[require.resolve(`.\\${new_path}`)];
+            delete require.cache[require.resolve(new_path)];
 
             try {
-                const updated_command = require(`.\\${new_path}`);
+                const updated_command = require(new_path);
 
                 if ('aliases' in updated_command && 'execute' in updated_command) {
                     updated_command.aliases.forEach(aliase => {
@@ -95,9 +95,9 @@ fs.watch(path.join(__dirname, `./commands`), (event, filename) => {
                 })
 
                 // delete it require cache to re-require it
-                delete require.cache[require.resolve(`.\\${new_path}`)];
+                delete require.cache[require.resolve(new_path)];
 
-                const updated_command = require(`.\\${new_path}`);
+                const updated_command = require(new_path);
 
                 if ('aliases' in updated_command && 'execute' in updated_command) {
                     updated_command.aliases.forEach(aliase => {

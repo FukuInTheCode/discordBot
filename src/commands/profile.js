@@ -1,5 +1,5 @@
-const { connection } = require('../server.js');
-const { EmbedBuilder } = require('discord.js');
+const { connect_usersdb } = require('../server.js');
+const { EmbedBuilder, User } = require('discord.js');
 
 module.exports = {
     name: "profile",
@@ -8,23 +8,19 @@ module.exports = {
 
     execute(message, args) {
 
-        if (args == 1) {
-            connection.query(``)
+        const author = message.author;
+
+        console.log(message.mentions.parsedUsers.at(0))
+
+        if (args.length == 1) {
+            const user_mentionned = message.mentions.parsedUsers.at(0);
+            connect_usersdb.query(`CALL get_user('${user_mentionned.id}', '${user_mentionned.username}')`, (err, results, fields) => {
+                if (err) throw err;
+
+                console.log(results[0]);
+            })
+        } else if (args.length > 1) {
+            message.reply('prout');
         }
-
-
-        const profileEmbed = new EmbedBuilder()
-            .setTitle(`${message.author.username}'s profile`)
-            .setFields(
-                { name: `Level:`, value: `999` },
-                { name: `XP:`, value: `666/1000` }
-            )
-            .setColor(0x0099FF)
-            .setThumbnail(message.author.displayAvatarURL());
-
-
-        message.reply({ embeds: [profileEmbed] });
-
     }
-
 }
