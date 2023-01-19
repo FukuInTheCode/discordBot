@@ -30,7 +30,7 @@ module.exports = {
                         { name: `character's purse`, value: `${query.user_coins}  :coin: \n Hello` },
                     ).setFooter({ text: `requested by ${message.author.username}`, iconURL: message.author.displayAvatarURL() });
 
-                reply.edit({ embeds: [embedProfile] })
+                reply.edit({ content: 'Data retrieved !', embeds: [embedProfile] })
             })
         })
     }
