@@ -1,5 +1,5 @@
 const { connect_usersdb } = require('../server.js');
-const { EmbedBuilder, User } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: "profile",
@@ -8,19 +8,26 @@ module.exports = {
 
     execute(message, args) {
 
-        const author = message.author;
+        message.reply('Retreiving profile data...').then(reply => {
 
-        console.log(message.mentions.parsedUsers.at(0))
+            const embedProfile = new EmbedBuilder;
 
-        if (args.length == 1) {
-            const user_mentionned = message.mentions.parsedUsers.at(0);
-            connect_usersdb.query(`CALL get_user('${user_mentionned.id}', '${user_mentionned.username}')`, (err, results, fields) => {
+            let user = message.author;
+
+
+            if (args.length >= 1) {
+
+                user = message.mentions.parsedUsers.at(0);
+
+            }
+
+            connect_usersdb.query(`CALL get_user('${user.id}', '${user.username}')`, (err, results, fields) => {
                 if (err) throw err;
 
-                console.log(results[0]);
+                const query = results[0][0];
+
+                console.log(query);
             })
-        } else if (args.length > 1) {
-            message.reply('prout');
-        }
+        })
     }
 }

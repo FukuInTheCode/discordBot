@@ -127,6 +127,8 @@ client.on('ready', c => {
 // Event Listener for any message
 client.on(`messageCreate`, msg => {
 
+    if (msg.content.includes('quoi')) msg.reply('feur');
+
     // check if the message is a command, if not then do things or not ;)
     if (!msg.content.startsWith(`!`) || (!msg.channel.name.toLowerCase().includes('fubot') && !msg.channel.name.toLowerCase().includes('mod'))) {
         return;
