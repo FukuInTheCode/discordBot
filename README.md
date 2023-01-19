@@ -8,3 +8,10 @@ but there is some complication about the SQL server because you will need the sa
 and I intend to add the .sql file to create the databases needed.
 
 Enjoy reading my terrible code :)
+
+
+PS: you should install those modules with npm:
+  -discord.js
+  -sql
+  -chokidar
+  -canvas
