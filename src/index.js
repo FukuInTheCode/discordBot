@@ -6,6 +6,7 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
 const message = require('./message.js');
+const { disconnect } = require('process');
 
 
 // creating the client for the bot 
@@ -20,6 +21,23 @@ const client = new Discord.Client({
 
 // the client 'stockage' for all the commands
 client.commands = new Discord.Collection();
+
+// --------------------------------------------------------------
+// create a basic slash command to keep your badge :)
+
+client.slash_commands = new Discord.Collection();
+
+const cmd = {
+    data: new Discord.SlashCommandBuilder().setName('ping').setDescription('Find out!'),
+
+    async execute(message) {
+        await message.reply('Pong!');
+    },
+};
+
+client.slash_commands.set(cmd.data.name, cmd)
+
+// --------------------------------------------------------------
 
 const commandFiles = fs.readdirSync(path.join(__dirname, './commands/')).filter(file => file.endsWith('.js'));
 
@@ -52,7 +70,7 @@ for (const file in commandFiles) {
                 client.commands.delete(aliase);
             })
         } catch (err) {
-            1 + 1; // this is just to pass the line :)))
+            console.error(err);
         } finally {
             // delete its require cache to re-require it
             delete require.cache[require.resolve(new_path)];
@@ -126,7 +144,6 @@ client.on('ready', c => {
 
 
 // Event Listener for any message
-
 message.start_Listeners(client);
 
 // log the client
